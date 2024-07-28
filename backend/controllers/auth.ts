@@ -187,7 +187,7 @@ export async function register(req: Request): Promise<Response> {
       });
     }
     
-    // สร้างข้อมูลผู้ใช้ 
+    // ���ร้างข้อมูลผู้ใช้ 
     let nameTH = "สนายุ จินตนาวรรณกุล";
     let nameEN = "Sanayu Jintanawannakun";
     let studentID = "65130406";
