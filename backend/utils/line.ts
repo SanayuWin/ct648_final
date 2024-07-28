@@ -1,5 +1,6 @@
 export async function SendToLine(message: string) {
-    const token = 'xc9Od32gX4RgWZxtuWncJ4ucyrkFyk7Xylif0TmygGA';
+    // const token = 'xc9Od32gX4RgWZxtuWncJ4ucyrkFyk7Xylif0TmygGA';
+    const token = 'C9vv0ynvs2J66fHIZuiUn15Bdm3mbUhXKhdHbHpUeUE'; // ทดสอบ
 
     const paras = {
         method: 'POST',

@@ -4,8 +4,6 @@ import bcrypt from 'bcrypt';
 import { formatDateTime } from '../utils/date'; 
 import { SendToLine } from '../utils/line'; 
 
-
-
 export async function login(req: Request): Promise<Response> {
   try {
     const { username, password } = await req.json();
@@ -53,11 +51,8 @@ export async function login(req: Request): Promise<Response> {
     const dateNow = formatDateTime(now);
     // ส่งแจ้งเตือนผ่านไลน์
     const message = `
-      กลุ่ม: Bun/React/Postgres
-      เวลาล็อคอิน: ${dateNow}
-      ล็อคอินผ่าน: username/password
-      token: ${token}
-    `;
+    User : 65130406@dpu.ac.th logged in
+    token: ${token}`;
     SendToLine(message);
 
     return new Response(JSON.stringify({ token }), {
@@ -86,7 +81,7 @@ export async function loginQRCode(req: Request): Promise<Response> {
     // Get the headers
     const rac = req.headers.get('RAC');
     const authorization = req.headers.get('Authorization');
-    const agent = req.headers.get('Agent');
+    // const agent = req.headers.get('Agent');
 
     // Extract the JWT from the Authorization header
     let token = '';
@@ -111,17 +106,17 @@ export async function loginQRCode(req: Request): Promise<Response> {
     const userId = payload.userId;
 
     // ตรวจสอบ agent ถูกหรือไม่
-    if (agent != 'CT648_Assignment2_QR_Authen'){
-      return new Response(JSON.stringify({ 
-        message: 'Invalid agent'
-      }), {
-        status: 401,
-        headers: { 
-          "Content-Type": "application/json; charset=UTF-8",
-          "Access-Control-Allow-Origin": "*"
-        },
-      });
-    }
+    // if (agent != 'CT648_Assignment2_QR_Authen'){
+    //   return new Response(JSON.stringify({ 
+    //     message: 'Invalid agent'
+    //   }), {
+    //     status: 401,
+    //     headers: { 
+    //       "Content-Type": "application/json; charset=UTF-8",
+    //       "Access-Control-Allow-Origin": "*"
+    //     },
+    //   });
+    // }
 
     // ตรวจสอบมีข้อมูล RAC หรือไม่
     const racResult = await db.query(`SELECT row_id FROM access_code_log WHERE access_code = $1 and COALESCE(token_before, '') = $2`, [rac, '']);
@@ -192,34 +187,10 @@ export async function register(req: Request): Promise<Response> {
       });
     }
     
-    // สร้างข้อมูลผู้ใช้
-    let nameTH = "ณัฐธีร์ พร้อมมูล";
-    let nameEN = "Natthee Prommool";
-    let studentID = "65130332";
-    username = studentID;
-    await db.query('insert into employee (username, password, salt, nameTH, nameEN, studentID) values ($1, $2, $3, $4, $5, $6)', [username, hashedPassword, salt, nameTH, nameEN, studentID]);
-
-    nameTH = "นนทพันธ์ เขียวรัตน์";
-    nameEN = "Nontapat Khieorat";
-    studentID = "65130604";
-    username = studentID;
-    await db.query('insert into employee (username, password, salt, nameTH, nameEN, studentID) values ($1, $2, $3, $4, $5, $6)', [username, hashedPassword, salt, nameTH, nameEN, studentID]);
-
-    nameTH = "ศุภิสรา ชีวนันทพร";
-    nameEN = "Suphitsara Cheevanantaporn";
-    studentID = "65130496";
-    username = studentID;
-    await db.query('insert into employee (username, password, salt, nameTH, nameEN, studentID) values ($1, $2, $3, $4, $5, $6)', [username, hashedPassword, salt, nameTH, nameEN, studentID]);
-
-    nameTH = "ธีรวัฒน์ กิตติวรวุฒิ";
-    nameEN = "Teerawat Kittivorawut";
-    studentID = "65130131";
-    username = studentID;
-    await db.query('insert into employee (username, password, salt, nameTH, nameEN, studentID) values ($1, $2, $3, $4, $5, $6)', [username, hashedPassword, salt, nameTH, nameEN, studentID]);
-
-    nameTH = "สนายุ จินตนาวรรณกุล";
-    nameEN = "Sanayu Jintanawannakun";
-    studentID = "65130406";
+    // สร้างข้อมูลผู้ใช้ 
+    let nameTH = "สนายุ จินตนาวรรณกุล";
+    let nameEN = "Sanayu Jintanawannakun";
+    let studentID = "65130406";
     username = studentID;
     await db.query('insert into employee (username, password, salt, nameTH, nameEN, studentID) values ($1, $2, $3, $4, $5, $6)', [username, hashedPassword, salt, nameTH, nameEN, studentID]);
   
@@ -243,5 +214,3 @@ export async function register(req: Request): Promise<Response> {
     });
   }
 }
-
-

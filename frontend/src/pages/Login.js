@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SlideNavbar.css'; 
 
 const BACKEND_SERVER = process.env.REACT_APP_BACKEND_SERVER;
@@ -7,6 +7,15 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    // const checkToken = sessionStorage.getItem('token');
+    const checkToken = localStorage.getItem('token');
+    if (checkToken) {
+      window.location.href = '/';
+    }
+  }, []);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,9 +35,14 @@ const Login = () => {
 
       // Handle successful login response
       const jsonData = await response.json();
+      if(jsonData.message === 'Invalid credentials'){
+        throw new Error(`Invalid credentials`);
+      }
+
       console.log('Login successful:', jsonData);
       // Save token to session storage
-      sessionStorage.setItem('token', jsonData.token);
+      // sessionStorage.setItem('token', jsonData.token);
+      localStorage.setItem('token', jsonData.token);
 
       // Redirect to '/'
       window.location.href = '/';
@@ -62,6 +76,7 @@ const Login = () => {
             required
           />
           <button type="submit">Login</button>
+          <a href="/loginqr"> Login QR Code</a>
         </form>
         {error && <p className="error">{error}</p>}
       </div>

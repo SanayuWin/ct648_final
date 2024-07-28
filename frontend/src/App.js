@@ -5,6 +5,9 @@ import React from 'react';
 // Components
 import Home from './pages/Home';
 import LoginFormComponent from './pages/Login'; 
+import ShowQRCode from './pages/QRCode'; 
+import ShowResearch from './pages/Research'; 
+import ShowHistoryLogin from './pages/HistoryLogin'; 
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginFormComponent />} />
+          <Route path="/loginqr" element={<ShowQRCode />} />
+          <Route path="/research" element={<ShowResearch />} />
+          <Route path="/history" element={<ShowHistoryLogin />} />
         </Routes>
       </main>
     </Router>

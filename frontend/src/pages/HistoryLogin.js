@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, Typography, Button  } from "@mui/material"; 
+import { Card, CardContent, Typography } from "@mui/material"; 
 
-const Home = () => {
+const ShowHistoryLogin = () => {
   const [data, setData] = useState([]);
   const BACKEND_SERVER = process.env.REACT_APP_BACKEND_SERVER;
   // const token = sessionStorage.getItem('token');
   const token = localStorage.getItem('token');
   const navigate = useNavigate(); 
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   };
-
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(BACKEND_SERVER + "getdata", {
+        const response = await fetch(BACKEND_SERVER + "gethistory", {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -43,40 +47,42 @@ const Home = () => {
         console.error("Error fetching data:", error);
       }
     };
-
+   
     fetchData();
   }, [BACKEND_SERVER, token, navigate]); 
 
   return (
     <div>
-      
       {data.length > 0 ? (
         data.map((item) => (
-          <Card key={item.studentid} style={{ marginBottom: 20 }}>
+          <Card key={item.row_id} style={{ marginBottom: 20 }}>
             <CardContent>
               <Typography variant="h5" component="div">
-                Student ID: {item.studentid}
+                Username: 65130406
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Name (Thai): {item.nameth}
+                Name (Thai): สนายุ จินตนาวรรณกุล
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Name (English): {item.nameen}
+                Name (English): จินตนาวรรณกุล
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Time login log: {formatDate(item.created_at)}
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Login type: {item.login_type}
               </Typography>
             </CardContent>
-            <a href="/research">Research</a>
-            <br/>
-            <a href="/history">History Login</a>
+            
           </Card>
         ))
+        
       ) : (
         <p>Loading...</p>
       )}
-      <Button onClick={logout} variant="contained" color="secondary" style={{ marginBottom: 10, width: '120px' }}>
-        Logout
-      </Button>
+      <a href="/">Home</a>
     </div>
   );
 };
 
-export default Home;
+export default ShowHistoryLogin;
