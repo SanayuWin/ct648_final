@@ -52,10 +52,9 @@ export async function verifyQRCode(req: Request): Promise<Response> {
         
         const now = new Date();
         const dateNow = formatDateTime(now);
-        // ส่งแจ้งเตือนผ่านไลน์
+        // ส่งแจ้งเตือน���่านไลน์
         const message = `User : 65130406@dpu.ac.th logged in`;
         SendToLine(message);
-
         
         return new Response(JSON.stringify({
             msg: `Successfully`,  
