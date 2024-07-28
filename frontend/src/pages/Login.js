@@ -37,6 +37,7 @@ const Login = () => {
       const jsonData = await response.json();
       if(jsonData.message === 'Invalid credentials'){
         throw new Error(`Invalid credentials`);
+        console.log('test');
       }
 
       console.log('Login successful:', jsonData);
